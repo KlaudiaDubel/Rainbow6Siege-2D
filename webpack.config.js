@@ -26,7 +26,11 @@ module.exports = {
                                 name: "[path][name].[hash].[ext]",
                             }
                     }
-            }
+            },
+            {
+                test: /\.css$/,
+                use: ['css-loader'],
+            },
         ]
     }
 }
