@@ -1,5 +1,12 @@
 import React from 'react';
 import "../css/playButton.css";
+import{
+    HashRouter,
+    Route,
+    Link,
+    Switch,
+    NavLink,
+} from "react-router-dom";
 
 
 class PlayButton extends React.Component
@@ -12,9 +19,11 @@ class PlayButton extends React.Component
 
     render()
     {
-        return <button className="playButton">
-            Play
-        </button>;
+        return <Link to={this.props.linkUrl}>
+            <button className="playButton">
+                {this.props.buttonText}
+        </button>
+        </Link>;
     }
 
 }

@@ -37,7 +37,7 @@ class MapPanel extends React.Component
                         </div>
                     </div>
                 </div>
-                <PlayButton/>
+                <PlayButton linkUrl="/game" buttonText="Play"/>
             </div>
         );
     }

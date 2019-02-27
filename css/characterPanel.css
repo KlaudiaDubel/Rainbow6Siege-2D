@@ -67,6 +67,8 @@
     font-size: 60px;
     font-weight: bold;
 
+    margin: 20px;
+
     animation: rainbow 8s infinite;
 
 }

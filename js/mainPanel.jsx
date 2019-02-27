@@ -16,7 +16,7 @@ class MainPanel extends React.Component
     {
         return <div className="mainPanel">
             <BigLogo />
-            <PlayButton/>
+            <PlayButton linkUrl="/characterPanel" buttonText=">"/>
         </div>;
     }
 

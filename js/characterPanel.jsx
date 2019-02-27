@@ -9,6 +9,7 @@ import MuteImage from "../images/Mute_trans.png";
 import ElaImage from "../images/Ela_trans.png";
 import SmokeImage from "../images/Smoke_trans.png";
 import "../css/characterPanel.css";
+import PlayButton from "./playButton.jsx";
 
 class CharacterPanel extends React.Component
 {
@@ -67,6 +68,7 @@ class CharacterPanel extends React.Component
                     </div>
                 </div>
             </div>
+            <PlayButton linkUrl="/mapPanel" buttonText=">"/>
         </div>;
     }
 }

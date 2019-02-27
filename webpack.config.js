@@ -3,6 +3,11 @@ var path = require("path");
 module.exports = {
     entry:"./js/mainApp.jsx",
     output: { filename: "out.js", path: path.resolve(__dirname, "dist") },
+    devServer: {
+        inline: true,
+        contentBase: './',
+        port: 3001
+    },
     mode: "development", watch: true,
     module: {
         rules: [{
