@@ -40,7 +40,7 @@ class CharacterPanel extends React.Component
                         </div>
                         <div className="operator">
                             <img src={FuzeImage} className="specnaz"></img>
-                            <span>Fuze</span>
+                            <span>Thermite</span>
                         </div>
                     </div>
 

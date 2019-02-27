@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-import CharacterPanel from './characterPanel.jsx';
+import PageNotFound from './pageNotFound.jsx';
 
 
 
@@ -15,7 +15,7 @@ class App extends React.Component
 
     render()
     {
-        return <CharacterPanel/>
+        return <PageNotFound/>
     }
 
 }
