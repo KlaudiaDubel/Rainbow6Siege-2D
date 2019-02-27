@@ -1,10 +1,8 @@
 import React from "react";
 import "../css/mapPanel.css";
 import BigLogo from "./bigLogo.jsx";
-import Border from "../images/Border.png";
-import ThemePark from "../images/ThemePark.png";
-import Hereford from "../images/Hereford.png";
 import PlayButton from "./playButton.jsx";
+import Map from "./map.jsx";
 
 class MapPanel extends React.Component
 {
@@ -23,18 +21,9 @@ class MapPanel extends React.Component
                 </div>
                 <div className="mapChoice">
                     <div className="maps">
-                        <div className="singleMap">
-                            <img src={Border} id="border"/>
-                            <span>Border</span>
-                        </div>
-                        <div className="singleMap">
-                            <img src={ThemePark} id="themePark"/>
-                            <span>Theme Park</span>
-                        </div>
-                        <div className="singleMap">
-                            <img src={Hereford} id="hereford"/>
-                            <span>Hareford Base</span>
-                        </div>
+                        <Map mapName="Border"/>
+                        <Map mapName="Theme Park"/>
+                        <Map mapName="Hereford Base"/>
                     </div>
                 </div>
                 <PlayButton linkUrl="/game" buttonText="Play"/>
