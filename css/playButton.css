@@ -1,0 +1,14 @@
+.playButton
+{
+    width: 130px;
+    height: 80px;
+    border: 2px solid darkgrey;
+    border-radius: 10px;
+    background: #323232;
+}
+
+.playButton svg
+{
+    font-size: 40px;
+    color: white;
+}

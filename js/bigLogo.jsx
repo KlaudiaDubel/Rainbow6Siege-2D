@@ -1,6 +1,5 @@
 import React from 'react';
 import bigLogoImage from "../images/bigLogo.png";
-import "../css/bigLogo.css";
 
 class BigLogo extends React.Component
 {
@@ -11,7 +10,7 @@ class BigLogo extends React.Component
 
     render()
     {
-        return <img className="bigLogo" src={bigLogoImage}/>;
+        return <img src={bigLogoImage}/>;
     }
 
 }

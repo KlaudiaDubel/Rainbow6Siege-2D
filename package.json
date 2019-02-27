@@ -9,8 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "react": "^15.4.0",
-    "react-dom": "^15.4.0"
+    "react-dom": "^15.4.0",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -19,6 +23,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^2.1.0",
+    "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3"

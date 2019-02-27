@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MainPanel from './mainPanel.jsx';
+
+
+import CharacterPanel from './characterPanel.jsx';
 
 
 
@@ -13,7 +15,7 @@ class App extends React.Component
 
     render()
     {
-        return <MainPanel/>
+        return <CharacterPanel/>
     }
 
 }
