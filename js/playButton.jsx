@@ -1,7 +1,5 @@
 import React from 'react';
 import "../css/playButton.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlay} from '@fortawesome/free-solid-svg-icons';
 
 
 class PlayButton extends React.Component
@@ -15,7 +13,7 @@ class PlayButton extends React.Component
     render()
     {
         return <button className="playButton">
-            <FontAwesomeIcon icon={faPlay}/>
+            Play
         </button>;
     }
 

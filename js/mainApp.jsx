@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
-import PageNotFound from './pageNotFound.jsx';
+import MapPanel from './mapPanel.jsx';
 
 
 
@@ -15,7 +13,7 @@ class App extends React.Component
 
     render()
     {
-        return <PageNotFound/>
+        return <MapPanel/>
     }
 
 }

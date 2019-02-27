@@ -19,28 +19,46 @@
     {
         color: purple;
     }
+    10%
+    {
+        color: black;
+    }
     20%
     {
         color: blue;
+    }
+    30%
+    {
+        color: black;
     }
     40%
     {
         color: green;
     }
+    50%
+    {
+        color: black;
+    }
     60%
     {
         color: yellow;
+    }
+    70%
+    {
+        color: black;
     }
     80%
     {
         color: orange;
     }
+    90%
+    {
+        color: black;
+    }
     100%
     {
         color: red;
     }
-
-
 }
 
 .characterPanel h1
