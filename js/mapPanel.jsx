@@ -21,13 +21,6 @@ class MapPanel extends React.Component
         document.addEventListener('keydown', this.handleKeyPress);
     }
 
-    isNoMapSelected = () => {
-        if(this.state.selectedIndex === null)
-        {
-            return true;
-        }
-    };
-
     setStateArrayElement = (index) => {
         let newState = Object.assign({}, this.state);
         newState.mapArray[index] = true;
@@ -40,7 +33,7 @@ class MapPanel extends React.Component
         event.preventDefault();
         if (event.key === "ArrowLeft")
         {
-            if (this.isNoMapSelected())
+            if (this.state.selectedIndex === null)
             {
                 this.setStateArrayElement(this.state.mapArray.length - 1);
             }
@@ -56,7 +49,7 @@ class MapPanel extends React.Component
         }
         else if (event.key === "ArrowRight")
         {
-            if (this.isNoMapSelected())
+            if (this.state.selectedIndex === null)
             {
                 this.setStateArrayElement(0);
             }

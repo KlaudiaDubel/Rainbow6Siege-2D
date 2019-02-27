@@ -12,6 +12,19 @@ class MainPanel extends React.Component
         super(props);
     }
 
+    componentDidMount()
+    {
+        document.addEventListener('keydown', this.handleKeyPress);
+    }
+
+    handleKeyPress = (event) => {
+        event.preventDefault();
+        if (event.key === "Enter")
+        {
+            this.props.history.push('/characterPanel');
+        }
+    };
+
     render()
     {
         return <div className="mainPanel">
