@@ -19,15 +19,35 @@ class App extends React.Component
     constructor(props)
     {
         super(props);
+        this.state = {
+            selectedAttacker: null,
+            selectedDefender: null,
+            selectedMap: null,
+        }
     }
+
+    setOperators = (attackerFromChild, defenderFromChild) =>
+    {
+        this.setState({
+           selectedAttacker: attackerFromChild,
+           selectedDefender: defenderFromChild,
+        });
+    };
+
+    setMap = (mapFromChild) =>
+    {
+        this.setState({
+            selectedMap: mapFromChild,
+        });
+    };
 
     render()
     {
         return <HashRouter>
             <Switch>
                 <Route exact path='/' component={MainPanel}/>
-                <Route path='/characterPanel' component={CharacterPanel}/>
-                <Route path='/mapPanel' component={MapPanel}/>
+                <Route path='/characterPanel' setParentState={this.setOperators} component={CharacterPanel}/>
+                <Route path='/mapPanel' setParentState={this.setMap} component={MapPanel}/>
                 <Route component={PageNotFound}/>
             </Switch>
         </HashRouter>

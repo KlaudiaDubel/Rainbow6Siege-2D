@@ -16,16 +16,29 @@ class Map extends React.Component
     selectMap = () => {
         if (this.props.mapName === "Border")
         {
-            this.mapImage = <img src={Border} id="border"/>
+            if(this.props.isSelected === true)
+                this.mapImage = <img src={Border} id="border"/>
+            else
+                this.mapImage = <img src={Border}/>
         }
         else if (this.props.mapName === "Theme Park")
         {
-            this.mapImage = <img src={ThemePark} id="themePark"/>
+            if(this.props.isSelected === true)
+                this.mapImage = <img src={ThemePark} id="themePark"/>
+            else
+                this.mapImage = <img src={ThemePark}/>
         }
         else if (this.props.mapName === "Hereford Base")
         {
-            this.mapImage = <img src={Hereford} id="hereford"></img>;
+            if(this.props.isSelected === true)
+                this.mapImage = <img src={Hereford} id="hereford"></img>;
+            else
+                this.mapImage = <img src={Hereford}></img>;
         }
+        if(this.props.isSelected === true)
+            this.mapSpan = <span className="selectedMapSpan">{this.props.mapName}</span>;
+        else
+            this.mapSpan = <span className="notSelectedMapSpan">{this.props.mapName}</span>;
     };
 
     render()
@@ -33,7 +46,7 @@ class Map extends React.Component
         this.selectMap();
         return <div className="singleMap">
             {this.mapImage}
-            <span>{this.props.mapName}</span>
+            {this.mapSpan}
         </div>
     }
 }
