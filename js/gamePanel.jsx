@@ -17,6 +17,10 @@ class GamePanel extends React.Component
     {
         super(props);
 
+        this.tolerance = 1;
+        this.operatorWidth = 30;
+        this.operatorHeight = 45;
+
         this.state =
             {
                 currentAttacker: this.props.selectedAttacker,
@@ -26,19 +30,29 @@ class GamePanel extends React.Component
                 attackerPositionX: 0,
                 attackerPositionY: 10,
 
-                defenderPositionX: 200,
+                defenderPositionX: 40,
                 defenderPositionY: 10,
 
                 gameEnded: null,
+                wallArray: [],
+                wallWidth: 0,
             }
     }
+
+    setWalls = (wallsFromChild, wallWidthFromChild) => {
+        this.setState({
+            wallArray: wallsFromChild,
+            wallWidth: wallWidthFromChild,
+        })
+    };
 
     getMapCanvas = () => {
       if (this.state.currentMap === "Theme Park")
       {
           return <ThemeParkCanvas attacker={this.state.currentAttacker} defender={this.state.currentDefender}
                                   attackerX={this.state.attackerPositionX} attackerY={this.state.attackerPositionY}
-                                  defenderX={this.state.defenderPositionX} defenderY={this.state.defenderPositionY}/>
+                                  defenderX={this.state.defenderPositionX} defenderY={this.state.defenderPositionY}
+                                  setParentState={this.setWalls}/>
       }
       else if (this.state.currentMap === "Border")
       {
@@ -53,13 +67,30 @@ class GamePanel extends React.Component
 
     };
 
+    attackerShallNotPass = () => {
+        for(let i = 0; i < this.state.wallArray.length; i++)
+        {
+            console.log(Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX));
+            if (Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
+
+                Math.abs(this.state.wallArray[i].y - this.state.wallWidth - this.state.attackerPositionY) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].y + this.state.wallWidth - this.state.attackerPositionY) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].y - this.state.wallWidth - this.state.attackerPositionY + this.operatorHeight) < this.tolerance ||
+                Math.abs(this.state.wallArray[i].y + this.state.wallWidth - this.state.attackerPositionY + this.operatorHeight) < this.tolerance)
+            {
+                return true;
+            }
+        }
+        return false;
+    };
+
     componentDidMount()
     {
         document.addEventListener('keydown', this.handleKeyDown);
     }
-
-    operatorWidth = 30;
-    operatorHeight = 45;
 
     handleArrowKeys = (event) =>
     {
@@ -91,7 +122,7 @@ class GamePanel extends React.Component
 
     handleWSADKeys = (event) =>
     {
-
+        const previousPosition = {x:this.state.attackerPositionX, y:this.state.attackerPositionY};
         if (event.key === "a")
         {
             this.setState({
@@ -116,6 +147,12 @@ class GamePanel extends React.Component
                 attackerPositionY: this.state.attackerPositionY + this.operatorHeight
             });
         }
+        console.log(this.attackerShallNotPass());
+        if(this.attackerShallNotPass())
+            this.setState({
+                attackerPositionX: previousPosition.x,
+                attackerPositionY: previousPosition.y,
+            })
     };
 
     handleOtherKeys = (event) =>
