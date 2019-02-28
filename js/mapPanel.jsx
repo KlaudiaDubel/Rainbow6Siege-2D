@@ -9,6 +9,7 @@ class MapPanel extends React.Component
     constructor(props)
     {
         super(props);
+        this.mapNameArray = ["Border", "Theme Park", "Hereford Base"];
         this.state =
             {
                     mapArray: [false, false, false],
@@ -67,7 +68,8 @@ class MapPanel extends React.Component
         {
             if(this.state.selectedIndex !== null)
             {
-                this.props.history.push('/game');
+                this.props.setParentState(this.mapNameArray[this.state.selectedIndex]);
+                this.props.history.push('/gamePanel');
             }
         }
     };

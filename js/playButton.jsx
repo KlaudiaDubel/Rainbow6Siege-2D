@@ -19,11 +19,14 @@ class PlayButton extends React.Component
 
     render()
     {
-        return <Link to={this.props.linkUrl}>
+        /*return <Link to={this.props.linkUrl}>
             <button className="playButton">
                 {this.props.buttonText}
         </button>
-        </Link>;
+        </Link>;*/
+        return <button className="playButton">
+                {this.props.buttonText}
+            </button>;
     }
 
 }

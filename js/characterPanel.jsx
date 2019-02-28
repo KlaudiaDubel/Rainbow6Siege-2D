@@ -9,6 +9,8 @@ class CharacterPanel extends React.Component
     constructor(props)
     {
         super(props);
+        this.attackerNameArray = ["Ash", "Montagne", "Finka", "Fuze"];
+        this.defenderNameArray = ["Frost", "Mute", "Ela", "Smoke"];
         this.state =
             {
                 attackerArray: [false, false, false, false],
@@ -110,6 +112,8 @@ class CharacterPanel extends React.Component
             if(this.state.selectedAttackerIndex !== null &&
                 this.state.selectedDefenderIndex !== null)
             {
+                this.props.setParentState(this.attackerNameArray[this.state.selectedAttackerIndex],
+                                          this.defenderNameArray[this.state.selectedDefenderIndex]);
                 this.props.history.push('/mapPanel');
             }
         }
