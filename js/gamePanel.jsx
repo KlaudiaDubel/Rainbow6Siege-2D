@@ -17,7 +17,7 @@ class GamePanel extends React.Component
     {
         super(props);
 
-        this.tolerance = 1;
+        this.tolerance = 20;
         this.operatorWidth = 30;
         this.operatorHeight = 45;
 
@@ -67,11 +67,10 @@ class GamePanel extends React.Component
 
     };
 
-    attackerShallNotPass = () => {
-        for(let i = 0; i < this.state.wallArray.length; i++)
+    attackerShallNotPass = (newPosition) => {
+        /*for(let i = 0; i < this.state.wallArray.length; i++)
         {
-            console.log(Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX));
-            if (Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX) < this.tolerance ||
+            if (Math.abs(this.state.wallArray[i].x - this.state.wallWidth - newPosition.x) < this.tolerance) ||
                 Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX) < this.tolerance ||
                 Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
                 Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
@@ -83,7 +82,7 @@ class GamePanel extends React.Component
             {
                 return true;
             }
-        }
+        }*/
         return false;
     };
 
@@ -122,37 +121,30 @@ class GamePanel extends React.Component
 
     handleWSADKeys = (event) =>
     {
-        const previousPosition = {x:this.state.attackerPositionX, y:this.state.attackerPositionY};
+        let newPosition = {x:this.state.attackerPositionX, y:this.state.attackerPositionY};
         if (event.key === "a")
         {
-            this.setState({
-                attackerPositionX: this.state.attackerPositionX - this.operatorWidth
-            });
+            newPosition.x = this.state.attackerPositionX - this.operatorWidth;
         }
         else if (event.key === "d")
         {
-            this.setState({
-                attackerPositionX: this.state.attackerPositionX + this.operatorWidth
-            });
+            newPosition.x = this.state.attackerPositionX + this.operatorWidth
         }
         else if (event.key === "w")
         {
-            this.setState({
-                attackerPositionY: this.state.attackerPositionY - this.operatorHeight
-            });
+            newPosition.y = this.state.attackerPositionY - this.operatorHeight
         }
         else if (event.key === "s")
         {
+            newPosition.y = this.state.attackerPositionY + this.operatorHeight
+        }
+        if(!this.attackerShallNotPass(newPosition))
+        {
             this.setState({
-                attackerPositionY: this.state.attackerPositionY + this.operatorHeight
+                attackerPositionX: newPosition.x,
+                attackerPositionY: newPosition.y,
             });
         }
-        console.log(this.attackerShallNotPass());
-        if(this.attackerShallNotPass())
-            this.setState({
-                attackerPositionX: previousPosition.x,
-                attackerPositionY: previousPosition.y,
-            })
     };
 
     handleOtherKeys = (event) =>
