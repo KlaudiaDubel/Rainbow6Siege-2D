@@ -114,6 +114,31 @@ class ThemeParkCanvas extends React.Component
         this.wallArray.push({x:747,y:48});
         this.wallArray.push({x:206,y:48});
         this.ctx.stroke();
+        this.ctx.moveTo(200,200);
+        this.ctx.lineTo(390, 200);
+        this.wallArray.push({x:200,y:200});
+        this.wallArray.push({x:390,y:200});
+        this.ctx.stroke();
+        this.ctx.moveTo(390,206);
+        this.ctx.lineTo(390, 150);
+        this.wallArray.push({x:390,y:206});
+        this.wallArray.push({x:390,y:150});
+        this.ctx.stroke();
+        this.ctx.moveTo(385,150);
+        this.ctx.lineTo(405, 150);
+        this.wallArray.push({x:385,y:150});
+        this.wallArray.push({x:405,y:150});
+        this.ctx.stroke();
+        this.ctx.moveTo(455,150);
+        this.ctx.lineTo(523, 150);
+        this.wallArray.push({x:455,y:150});
+        this.wallArray.push({x:523,y:150});
+        this.ctx.stroke();
+        this.ctx.moveTo(524,155);
+        this.ctx.lineTo(524, 52);
+        this.wallArray.push({x:524,y:155});
+        this.wallArray.push({x:524,y:52});
+        this.ctx.stroke();
     };
 
     componentDidMount() {

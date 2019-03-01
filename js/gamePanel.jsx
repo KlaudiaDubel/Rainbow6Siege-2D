@@ -96,25 +96,25 @@ class GamePanel extends React.Component
         if (event.key === "ArrowLeft")
         {
             this.setState({
-                defenderPositionX: this.state.defenderPositionX - this.operatorWidth
+                defenderPositionX: this.state.defenderPositionX - this.operatorWidth / 3
             });
         }
         else if (event.key === "ArrowRight")
         {
             this.setState({
-                defenderPositionX: this.state.defenderPositionX + this.operatorWidth
+                defenderPositionX: this.state.defenderPositionX + this.operatorWidth / 3
             });
         }
         else if (event.key === "ArrowUp")
         {
             this.setState({
-                defenderPositionY: this.state.defenderPositionY - this.operatorHeight
+                defenderPositionY: this.state.defenderPositionY - this.operatorHeight / 3
             });
         }
         else if (event.key === "ArrowDown")
         {
             this.setState({
-                defenderPositionY: this.state.defenderPositionY + this.operatorHeight
+                defenderPositionY: this.state.defenderPositionY + this.operatorHeight / 3
             });
         }
     };
@@ -124,19 +124,19 @@ class GamePanel extends React.Component
         let newPosition = {x:this.state.attackerPositionX, y:this.state.attackerPositionY};
         if (event.key === "a")
         {
-            newPosition.x = this.state.attackerPositionX - this.operatorWidth;
+            newPosition.x = this.state.attackerPositionX - this.operatorWidth / 3
         }
         else if (event.key === "d")
         {
-            newPosition.x = this.state.attackerPositionX + this.operatorWidth
+            newPosition.x = this.state.attackerPositionX + this.operatorWidth / 3
         }
         else if (event.key === "w")
         {
-            newPosition.y = this.state.attackerPositionY - this.operatorHeight
+            newPosition.y = this.state.attackerPositionY - this.operatorHeight / 3
         }
         else if (event.key === "s")
         {
-            newPosition.y = this.state.attackerPositionY + this.operatorHeight
+            newPosition.y = this.state.attackerPositionY + this.operatorHeight / 3
         }
         if(!this.attackerShallNotPass(newPosition))
         {
