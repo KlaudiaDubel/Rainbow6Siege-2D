@@ -17,7 +17,7 @@ class GamePanel extends React.Component
     {
         super(props);
 
-        this.tolerance = { x: 20, y: 25 };
+        this.tolerance = { x: 20, y: 27.5 };
         this.operatorWidth = 30;
         this.operatorHeight = 45;
 
@@ -30,8 +30,8 @@ class GamePanel extends React.Component
                 attackerPositionX: 0,
                 attackerPositionY: 10,
 
-                defenderPositionX: 40,
-                defenderPositionY: 10,
+                defenderPositionX: 400,
+                defenderPositionY: 310,
 
                 gameEnded: null,
                 wallArray: [],
@@ -67,8 +67,79 @@ class GamePanel extends React.Component
 
     };
 
+    avoidWallDown = (operatorCenter, wallBegin, wallEnd) => {
+        if ((operatorCenter.y - wallBegin.y > -this.tolerance.y /2 &&
+            operatorCenter.y - wallEnd.y < this.tolerance.y) &&
+            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    };
+
+    avoidWallLeft = (operatorCenter, wallBegin, wallEnd) => {
+        if ((operatorCenter.x - wallEnd.x > -this.tolerance.x/2 &&
+            operatorCenter.x - wallBegin.x < this.tolerance.x) &&
+            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    };
+
+    avoidWallRight = (operatorCenter, wallBegin, wallEnd) => {
+        if ((operatorCenter.x - wallBegin.x > -this.tolerance.x/2 &&
+            operatorCenter.x - wallEnd.x < this.tolerance.x) &&
+            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    };
+
+    avoidWallUp = (operatorCenter, wallBegin, wallEnd) => {
+        if ((operatorCenter.y - wallEnd.y > -this.tolerance.y/2 &&
+            operatorCenter.y - wallBegin.y < this.tolerance.y) &&
+            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    };
+
+    wallDirection = (wallBegin, wallEnd) => {
+        if(Math.abs(wallBegin.x - wallEnd.x) < this.state.wallWidth)
+        {
+            //pozioma
+            if(wallBegin.y < wallEnd.y)
+                return "Down";
+            else
+                return "Up"
+        }
+        else if (Math.abs(wallBegin.y - wallEnd.y) < this.state.wallWidth)
+        {
+            //pionowa
+            if(wallBegin.x < wallEnd.x)
+                return "Right";
+            else
+                return "Left"
+        }
+    };
+
     attackerShallNotPass = (newPosition) => {
-        for(let i = 0; i < 1/*this.state.wallArray.length-1*/; i++)
+        for(let i = 0; i < this.state.wallArray.length-1; i+=2)
         {
             const attackerCenter = {x:newPosition.x+this.operatorWidth/2,
                                     y:newPosition.y+this.operatorHeight/2};
@@ -77,12 +148,62 @@ class GamePanel extends React.Component
             const wallEnd = {x:this.state.wallArray[i+1].x,
                              y:this.state.wallArray[i+1].y};
 
-            if ((attackerCenter.y - wallBegin.y > -this.tolerance.y &&
-                 attackerCenter.y - wallEnd.y < this.tolerance.y) &&
-                (Math.abs(attackerCenter.x - wallBegin.x) < this.tolerance.x))
+            if(this.wallDirection(wallBegin,wallEnd) === "Down")
             {
-                return true;
+                if(this.avoidWallDown(attackerCenter, wallBegin, wallEnd))
+                    return true;
             }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Up")
+            {
+                if(this.avoidWallUp(attackerCenter, wallBegin, wallEnd))
+                    return true;
+            }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Left")
+            {
+                if(this.avoidWallLeft(attackerCenter, wallBegin, wallEnd))
+                    return true;
+            }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Right")
+            {
+                if(this.avoidWallRight(attackerCenter, wallBegin, wallEnd))
+                    return true;
+            }
+
+        }
+        return false;
+    };
+
+    defenderShallNotPass = (newPosition) => {
+        for(let i = 0; i < this.state.wallArray.length-1; i+=2)
+        {
+            const defenderCenter = {x:newPosition.x+this.operatorWidth/2,
+                y:newPosition.y+this.operatorHeight/2};
+            const wallBegin = {x:this.state.wallArray[i].x,
+                y:this.state.wallArray[i].y};
+            const wallEnd = {x:this.state.wallArray[i+1].x,
+                y:this.state.wallArray[i+1].y};
+
+            if(this.wallDirection(wallBegin,wallEnd) === "Down")
+            {
+                if(this.avoidWallDown(defenderCenter, wallBegin, wallEnd))
+                    return true;
+            }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Up")
+            {
+                if(this.avoidWallUp(defenderCenter, wallBegin, wallEnd))
+                    return true;
+            }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Left")
+            {
+                if(this.avoidWallLeft(defenderCenter, wallBegin, wallEnd))
+                    return true;
+            }
+            else if(this.wallDirection(wallBegin,wallEnd) === "Right")
+            {
+                if(this.avoidWallRight(defenderCenter, wallBegin, wallEnd))
+                    return true;
+            }
+
         }
         return false;
     };
@@ -94,28 +215,28 @@ class GamePanel extends React.Component
 
     handleArrowKeys = (event) =>
     {
+        let newPosition = {x:this.state.defenderPositionX, y:this.state.defenderPositionY};
         if (event.key === "ArrowLeft")
         {
-            this.setState({
-                defenderPositionX: this.state.defenderPositionX - this.operatorWidth / 3
-            });
+            newPosition.x = this.state.defenderPositionX - this.operatorWidth / 3
         }
         else if (event.key === "ArrowRight")
         {
-            this.setState({
-                defenderPositionX: this.state.defenderPositionX + this.operatorWidth / 3
-            });
+            newPosition.x = this.state.defenderPositionX + this.operatorWidth / 3
         }
         else if (event.key === "ArrowUp")
         {
-            this.setState({
-                defenderPositionY: this.state.defenderPositionY - this.operatorHeight / 3
-            });
+            newPosition.y = this.state.defenderPositionY - this.operatorHeight / 3
         }
         else if (event.key === "ArrowDown")
         {
+            newPosition.y = this.state.defenderPositionY + this.operatorHeight / 3
+        }
+        if(!this.defenderShallNotPass(newPosition))
+        {
             this.setState({
-                defenderPositionY: this.state.defenderPositionY + this.operatorHeight / 3
+                defenderPositionX: newPosition.x,
+                defenderPositionY: newPosition.y,
             });
         }
     };
