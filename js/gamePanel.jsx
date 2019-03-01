@@ -17,7 +17,7 @@ class GamePanel extends React.Component
     {
         super(props);
 
-        this.tolerance = 20;
+        this.tolerance = { x: 20, y: 25 };
         this.operatorWidth = 30;
         this.operatorHeight = 45;
 
@@ -68,21 +68,22 @@ class GamePanel extends React.Component
     };
 
     attackerShallNotPass = (newPosition) => {
-        /*for(let i = 0; i < this.state.wallArray.length; i++)
+        for(let i = 0; i < 1/*this.state.wallArray.length-1*/; i++)
         {
-            if (Math.abs(this.state.wallArray[i].x - this.state.wallWidth - newPosition.x) < this.tolerance) ||
-                Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX) < this.tolerance ||
-                Math.abs(this.state.wallArray[i].x - this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
-                Math.abs(this.state.wallArray[i].x + this.state.wallWidth - this.state.attackerPositionX + this.operatorWidth) < this.tolerance ||
+            const attackerCenter = {x:newPosition.x+this.operatorWidth/2,
+                                    y:newPosition.y+this.operatorHeight/2};
+            const wallBegin = {x:this.state.wallArray[i].x,
+                               y:this.state.wallArray[i].y};
+            const wallEnd = {x:this.state.wallArray[i+1].x,
+                             y:this.state.wallArray[i+1].y};
 
-                Math.abs(this.state.wallArray[i].y - this.state.wallWidth - this.state.attackerPositionY) < this.tolerance ||
-                Math.abs(this.state.wallArray[i].y + this.state.wallWidth - this.state.attackerPositionY) < this.tolerance ||
-                Math.abs(this.state.wallArray[i].y - this.state.wallWidth - this.state.attackerPositionY + this.operatorHeight) < this.tolerance ||
-                Math.abs(this.state.wallArray[i].y + this.state.wallWidth - this.state.attackerPositionY + this.operatorHeight) < this.tolerance)
+            if ((attackerCenter.y - wallBegin.y > -this.tolerance.y &&
+                 attackerCenter.y - wallEnd.y < this.tolerance.y) &&
+                (Math.abs(attackerCenter.x - wallBegin.x) < this.tolerance.x))
             {
                 return true;
             }
-        }*/
+        }
         return false;
     };
 
