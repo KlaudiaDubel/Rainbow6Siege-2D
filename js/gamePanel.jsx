@@ -69,7 +69,7 @@ class GamePanel extends React.Component
 
     avoidWallDown = (operatorCenter, wallBegin, wallEnd) => {
         if ((operatorCenter.y - wallBegin.y > -this.tolerance.y /2 &&
-            operatorCenter.y - wallEnd.y < this.tolerance.y) &&
+            operatorCenter.y - wallEnd.y < this.tolerance.y/2) &&
             (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
         {
             return true;
@@ -82,7 +82,7 @@ class GamePanel extends React.Component
 
     avoidWallLeft = (operatorCenter, wallBegin, wallEnd) => {
         if ((operatorCenter.x - wallEnd.x > -this.tolerance.x/2 &&
-            operatorCenter.x - wallBegin.x < this.tolerance.x) &&
+            operatorCenter.x - wallBegin.x < this.tolerance.x/2) &&
             (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
         {
             return true;
@@ -95,7 +95,7 @@ class GamePanel extends React.Component
 
     avoidWallRight = (operatorCenter, wallBegin, wallEnd) => {
         if ((operatorCenter.x - wallBegin.x > -this.tolerance.x/2 &&
-            operatorCenter.x - wallEnd.x < this.tolerance.x) &&
+            operatorCenter.x - wallEnd.x < this.tolerance.x/2) &&
             (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
         {
             return true;
@@ -108,7 +108,7 @@ class GamePanel extends React.Component
 
     avoidWallUp = (operatorCenter, wallBegin, wallEnd) => {
         if ((operatorCenter.y - wallEnd.y > -this.tolerance.y/2 &&
-            operatorCenter.y - wallBegin.y < this.tolerance.y) &&
+            operatorCenter.y - wallBegin.y < this.tolerance.y/2) &&
             (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
         {
             return true;
@@ -122,7 +122,7 @@ class GamePanel extends React.Component
     wallDirection = (wallBegin, wallEnd) => {
         if(Math.abs(wallBegin.x - wallEnd.x) < this.state.wallWidth)
         {
-            //pozioma
+            //pionowa
             if(wallBegin.y < wallEnd.y)
                 return "Down";
             else
@@ -130,12 +130,14 @@ class GamePanel extends React.Component
         }
         else if (Math.abs(wallBegin.y - wallEnd.y) < this.state.wallWidth)
         {
-            //pionowa
+            //pozioma
             if(wallBegin.x < wallEnd.x)
                 return "Right";
             else
                 return "Left"
         }
+        else
+            return "Skew";
     };
 
     attackerShallNotPass = (newPosition) => {

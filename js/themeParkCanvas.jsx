@@ -31,7 +31,7 @@ class ThemeParkCanvas extends React.Component
     };
 
     drawWalls = () => {
-        this.ctx.strokeStyle = "#B000B5";
+        this.ctx.strokeStyle = "grey";
         this.ctx.lineWidth = 10;
         this.ctx.beginPath();
         this.ctx.moveTo(206, 43);
@@ -133,6 +133,21 @@ class ThemeParkCanvas extends React.Component
         this.ctx.lineTo(524, 52);
         this.wallArray.push({x:524,y:155});
         this.wallArray.push({x:524,y:52});
+        this.ctx.stroke();
+        this.ctx.moveTo(471,155);
+        this.ctx.lineTo(471, 366);
+        this.wallArray.push({x:471,y:155});
+        this.wallArray.push({x:471,y:366});
+        this.ctx.stroke();
+        this.ctx.moveTo(475,369);
+        this.ctx.lineTo(370, 369);
+        this.wallArray.push({x:475,y:369});
+        this.wallArray.push({x:370,y:369});
+        this.ctx.stroke();
+        this.ctx.moveTo(329,369);
+        this.ctx.lineTo(255, 369);
+        this.wallArray.push({x:329,y:369});
+        this.wallArray.push({x:255,y:369});
         this.ctx.stroke();
     };
 
