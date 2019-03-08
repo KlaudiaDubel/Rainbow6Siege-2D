@@ -18,7 +18,6 @@ class CharacterPanel extends React.Component
                 selectedAttackerIndex: null,
                 selectedDefenderIndex: null,
             };
-        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount()

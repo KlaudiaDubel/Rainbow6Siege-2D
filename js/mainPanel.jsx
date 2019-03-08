@@ -10,7 +10,6 @@ class MainPanel extends React.Component
     constructor(props)
     {
         super(props);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount()
