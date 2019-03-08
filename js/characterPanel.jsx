@@ -18,11 +18,17 @@ class CharacterPanel extends React.Component
                 selectedAttackerIndex: null,
                 selectedDefenderIndex: null,
             };
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount()
     {
-        document.addEventListener('keydown', this.handleKeyPress)
+        window.addEventListener('keydown', this.handleKeyPress)
+    }
+
+    componentWillUnmount()
+    {
+        window.removeEventListener('keydown', this.handleKeyPress);
     }
 
     setStateAttArrayElement = (index) => {

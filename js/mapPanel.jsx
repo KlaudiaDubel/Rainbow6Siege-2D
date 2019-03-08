@@ -15,11 +15,17 @@ class MapPanel extends React.Component
                     mapArray: [false, false, false],
                     selectedIndex: null,
             };
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount()
     {
-        document.addEventListener('keydown', this.handleKeyPress);
+        window.addEventListener('keydown', this.handleKeyPress);
+    }
+
+    componentWillUnmount()
+    {
+        window.removeEventListener('keydown', this.handleKeyPress);
     }
 
     setStateArrayElement = (index) => {

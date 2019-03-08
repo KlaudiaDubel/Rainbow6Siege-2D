@@ -37,6 +37,7 @@ class GamePanel extends React.Component
                 wallArray: [],
                 wallWidth: 0,
             }
+        this.handleKeyPress = this.handleKeyDown.bind(this);
     }
 
     setWalls = (wallsFromChild, wallWidthFromChild) => {
@@ -212,7 +213,12 @@ class GamePanel extends React.Component
 
     componentDidMount()
     {
-        document.addEventListener('keydown', this.handleKeyDown);
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount()
+    {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     handleArrowKeys = (event) =>

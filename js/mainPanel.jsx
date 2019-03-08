@@ -10,11 +10,17 @@ class MainPanel extends React.Component
     constructor(props)
     {
         super(props);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount()
     {
-        document.addEventListener('keydown', this.handleKeyPress);
+        window.addEventListener('keydown', this.handleKeyPress);
+    }
+
+    componentWillUnmount()
+    {
+        window.removeEventListener('keydown', this.handleKeyPress);
     }
 
     handleKeyPress = (event) => {
