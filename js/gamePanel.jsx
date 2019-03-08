@@ -18,8 +18,10 @@ class GamePanel extends React.Component
         super(props);
 
         this.tolerance = { x: 20, y: 27.5 };
-        this.operatorWidth = 30;
+        this.operatorWidth = 35;
         this.operatorHeight = 45;
+
+        this.roundsPerMinute = 700;
 
         this.state =
             {
@@ -29,9 +31,15 @@ class GamePanel extends React.Component
 
                 attackerPositionX: 0,
                 attackerPositionY: 10,
+                attackerOrientation: "right",
+                attackerFire: false,
 
                 defenderPositionX: 400,
                 defenderPositionY: 310,
+                defenderOrientation: "right",
+                defenderFire: false,
+
+                operatorStepScale: 1/3,
 
                 gameEnded: null,
                 wallArray: [],
@@ -51,7 +59,9 @@ class GamePanel extends React.Component
       {
           return <ThemeParkCanvas attacker={this.state.currentAttacker} defender={this.state.currentDefender}
                                   attackerX={this.state.attackerPositionX} attackerY={this.state.attackerPositionY}
+                                  attackerOrientation={this.state.attackerOrientation} attackerFire={this.state.attackerFire}
                                   defenderX={this.state.defenderPositionX} defenderY={this.state.defenderPositionY}
+                                  defenderOrientation={this.state.defenderOrientation} defenderFire={this.state.defenderFire}
                                   setParentState={this.setWalls}/>
       }
       else if (this.state.currentMap === "Border")
@@ -68,55 +78,27 @@ class GamePanel extends React.Component
     };
 
     avoidWallDown = (operatorCenter, wallBegin, wallEnd) => {
-        if ((operatorCenter.y - wallBegin.y > -this.tolerance.y /2 &&
-            operatorCenter.y - wallEnd.y < this.tolerance.y/2) &&
-            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (operatorCenter.y - wallBegin.y > -this.tolerance.y / 2 &&
+            operatorCenter.y - wallEnd.y < this.tolerance.y / 2) &&
+            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x);
     };
 
     avoidWallLeft = (operatorCenter, wallBegin, wallEnd) => {
-        if ((operatorCenter.x - wallEnd.x > -this.tolerance.x/2 &&
-            operatorCenter.x - wallBegin.x < this.tolerance.x/2) &&
-            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (operatorCenter.x - wallEnd.x > -this.tolerance.x / 2 &&
+            operatorCenter.x - wallBegin.x < this.tolerance.x / 2) &&
+            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y);
     };
 
     avoidWallRight = (operatorCenter, wallBegin, wallEnd) => {
-        if ((operatorCenter.x - wallBegin.x > -this.tolerance.x/2 &&
-            operatorCenter.x - wallEnd.x < this.tolerance.x/2) &&
-            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (operatorCenter.x - wallBegin.x > -this.tolerance.x / 2 &&
+            operatorCenter.x - wallEnd.x < this.tolerance.x / 2) &&
+            (Math.abs(operatorCenter.y - wallBegin.y) < this.tolerance.y);
     };
 
     avoidWallUp = (operatorCenter, wallBegin, wallEnd) => {
-        if ((operatorCenter.y - wallEnd.y > -this.tolerance.y/2 &&
-            operatorCenter.y - wallBegin.y < this.tolerance.y/2) &&
-            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (operatorCenter.y - wallEnd.y > -this.tolerance.y / 2 &&
+            operatorCenter.y - wallBegin.y < this.tolerance.y / 2) &&
+            (Math.abs(operatorCenter.x - wallBegin.x) < this.tolerance.x);
     };
 
     wallDirection = (wallBegin, wallEnd) => {
@@ -218,26 +200,35 @@ class GamePanel extends React.Component
     componentWillUnmount()
     {
         window.removeEventListener('keydown', this.handleKeyDown);
+        clearInterval(this.attackerShootingInterval);
+        clearInterval(this.defenderShootingInterval);
+        clearTimeout(this.attackerShootingTimeout);
+        clearTimeout(this.defenderShootingTimeout);
     }
 
     handleArrowKeys = (event) =>
     {
         let newPosition = {x:this.state.defenderPositionX, y:this.state.defenderPositionY};
-        if (event.key === "ArrowLeft")
-        {
-            newPosition.x = this.state.defenderPositionX - this.operatorWidth / 3
+        if (event.key === "ArrowLeft") {
+            if (this.state.defenderOrientation === "right")
+                this.setState({defenderOrientation: "left"});
+            else
+                newPosition.x = this.state.defenderPositionX - this.operatorWidth * this.state.operatorStepScale
         }
         else if (event.key === "ArrowRight")
         {
-            newPosition.x = this.state.defenderPositionX + this.operatorWidth / 3
+            if (this.state.defenderOrientation === "left")
+                this.setState({defenderOrientation: "right"});
+            else
+                newPosition.x = this.state.defenderPositionX + this.operatorWidth * this.state.operatorStepScale
         }
         else if (event.key === "ArrowUp")
         {
-            newPosition.y = this.state.defenderPositionY - this.operatorHeight / 3
+            newPosition.y = this.state.defenderPositionY - this.operatorHeight * this.state.operatorStepScale
         }
         else if (event.key === "ArrowDown")
         {
-            newPosition.y = this.state.defenderPositionY + this.operatorHeight / 3
+            newPosition.y = this.state.defenderPositionY + this.operatorHeight * this.state.operatorStepScale
         }
         if(!this.defenderShallNotPass(newPosition))
         {
@@ -253,19 +244,25 @@ class GamePanel extends React.Component
         let newPosition = {x:this.state.attackerPositionX, y:this.state.attackerPositionY};
         if (event.key === "a")
         {
-            newPosition.x = this.state.attackerPositionX - this.operatorWidth / 3
+            if (this.state.attackerOrientation === "right")
+                this.setState({attackerOrientation: "left"});
+            else
+                newPosition.x = this.state.attackerPositionX - this.operatorWidth * this.state.operatorStepScale
         }
         else if (event.key === "d")
         {
-            newPosition.x = this.state.attackerPositionX + this.operatorWidth / 3
+            if (this.state.attackerOrientation === "left")
+                this.setState({attackerOrientation: "right"});
+            else
+                newPosition.x = this.state.attackerPositionX + this.operatorWidth * this.state.operatorStepScale
         }
         else if (event.key === "w")
         {
-            newPosition.y = this.state.attackerPositionY - this.operatorHeight / 3
+            newPosition.y = this.state.attackerPositionY - this.operatorHeight * this.state.operatorStepScale
         }
         else if (event.key === "s")
         {
-            newPosition.y = this.state.attackerPositionY + this.operatorHeight / 3
+            newPosition.y = this.state.attackerPositionY + this.operatorHeight * this.state.operatorStepScale
         }
         if(!this.attackerShallNotPass(newPosition))
         {
@@ -285,6 +282,40 @@ class GamePanel extends React.Component
             {
                 this.props.history.push('/');
             }
+        }
+        else if (event.key === "f")
+        {
+            clearInterval(this.attackerShootingInterval);
+            clearTimeout(this.attackerShootingTimeout);
+            this.setState({attackerFire:true});
+            this.attackerShootingInterval = setInterval(() =>
+            {
+                if(this.state.attackerFire)
+                    this.setState({attackerFire: false});
+                else
+                    this.setState({attackerFire: true});
+            },100);
+            this.attackerShootingTimeout = setTimeout( () =>
+            {
+                clearInterval(this.attackerShootingInterval);
+            },500);
+        }
+        else if (event.which === 220)
+        {
+            clearInterval(this.defenderShootingInterval);
+            clearTimeout(this.defenderShootingTimeout);
+            this.setState({defenderFire:true});
+            this.defenderShootingInterval = setInterval(() =>
+            {
+                if(this.state.defenderFire)
+                    this.setState({defenderFire: false});
+                else
+                    this.setState({defenderFire: true});
+            },100);
+            this.defenderShootingTimeout = setTimeout( () =>
+            {
+                clearInterval(this.defenderShootingInterval);
+            },500);
         }
     };
 

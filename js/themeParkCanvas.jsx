@@ -13,7 +13,7 @@ class ThemeParkCanvas extends React.Component
                 defenderImage: null,
             };
         this.ctx = null;
-        this.operatorWidth = 30;
+        this.operatorWidth = 35;
         this.operatorHeight = 45;
         this.wallArray = [];
     }
@@ -157,17 +157,49 @@ class ThemeParkCanvas extends React.Component
         this.ctx = ctx;
 
         this.props.setParentState(this.wallArray, 10);
+        this.drawWalls();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.attackerX !== prevProps.attackerX || this.props.attackerY !== prevProps.attackerY)
-            this.ctx.clearRect(prevProps.attackerX, prevProps.attackerY, this.operatorWidth, this.operatorHeight);
-        if(this.props.defenderX !== prevProps.defenderX || this.props.defenderY !== prevProps.defenderY)
-            this.ctx.clearRect(prevProps.defenderX, prevProps.defenderY, this.operatorWidth, this.operatorHeight);
-        this.drawWalls();
-        if(this.ctx !== null) {
-            this.ctx.drawImage(this.state.attackerImage, this.props.attackerX, this.props.attackerY, this.operatorWidth, this.operatorHeight);
-            this.ctx.drawImage(this.state.defenderImage, this.props.defenderX, this.props.defenderY, this.operatorWidth, this.operatorHeight);
+    componentDidUpdate(prevProps, prevState, snapshot)
+    {
+        if(this.ctx !== null)
+        {
+            if(this.props.attackerX !== prevProps.attackerX || this.props.attackerY !== prevProps.attackerY ||
+                this.props.attackerOrientation !== prevProps.attackerOrientation ||
+                this.props.attackerFire !== prevProps.attackerFire)
+            {
+                this.ctx.clearRect(prevProps.attackerX, prevProps.attackerY, this.operatorWidth, this.operatorHeight);
+            }
+            if(this.props.attackerOrientation === "left")
+            {
+                this.ctx.save();
+                this.ctx.scale(-1, 1);
+                this.ctx.drawImage(this.state.attackerImage, -(this.props.attackerX + this.operatorWidth),
+                                    this.props.attackerY, this.operatorWidth, this.operatorHeight);
+                this.ctx.restore();
+            }
+            else
+            {
+                this.ctx.drawImage(this.state.attackerImage, this.props.attackerX, this.props.attackerY, this.operatorWidth, this.operatorHeight);
+            }
+            if(this.props.defenderX !== prevProps.defenderX || this.props.defenderY !== prevProps.defenderY ||
+                this.props.defenderOrientation !== prevProps.defenderOrientation ||
+                this.props.defenderFire !== prevProps.defenderFire)
+            {
+                this.ctx.clearRect(prevProps.defenderX, prevProps.defenderY, this.operatorWidth, this.operatorHeight);
+            }
+            if(this.props.defenderOrientation === "left")
+            {
+                this.ctx.save();
+                this.ctx.scale(-1, 1);
+                this.ctx.drawImage(this.state.defenderImage, -(this.props.defenderX + this.operatorWidth),
+                                    this.props.defenderY, this.operatorWidth, this.operatorHeight);
+                this.ctx.restore();
+            }
+            else
+            {
+                this.ctx.drawImage(this.state.defenderImage, this.props.defenderX, this.props.defenderY, this.operatorWidth, this.operatorHeight);
+            }
         }
     };
 
@@ -175,8 +207,8 @@ class ThemeParkCanvas extends React.Component
     {
         return <div className="canvasPanel">
             <canvas ref="canvas" width="1200px" height="700px"></canvas>
-            <GameOperator setParentState={this.setAttackerState} name={this.props.attacker}/>
-            <GameOperator setParentState={this.setDefenderState} name={this.props.defender}/>
+            <GameOperator setParentState={this.setAttackerState} name={this.props.attacker} weaponFire={this.props.attackerFire}/>
+            <GameOperator setParentState={this.setDefenderState} name={this.props.defender} weaponFire={this.props.defenderFire}/>
         </div>
     }
 }
